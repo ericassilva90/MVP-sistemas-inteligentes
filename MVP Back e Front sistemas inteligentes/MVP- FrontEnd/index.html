@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>My bookcase</title>
+</head>
+
+<body>
+  <div class="container">
+      <div>
+          <h1>Meus livros</h1>
+      </div>
+      <!--Fomulário responsável por receber os dados a serem armazenados-->
+      <form onsubmit="event.preventDefault();">
+          <fieldset>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+              <label for="author">Author</label>
+              <input type="text" id="author" name="author">
+            </div>
+            <div class="form-group">
+              <label for="synopsis">Synopsis</label>
+              <input type="text" id="synopsis" name="synopsis">
+            </div>
+            <button onclick="newItem()", type="submit">Save</button>
+          </fieldset>
+      <!--Tabela que recebe os dados-->
+      </form>
+      <div class="container">
+          <table id="Tabela">
+           <thead class="thead-default">
+              <tr class="tabela-linha">
+                 <th>Name</th>
+                 <th>Author</th>
+                 <th>Synopsis</th>
+                 <th>Genre</th>
+      
+              </tr>
+           </thead>
+          </table>
+      </div>
+
+  </div>
+  <script src="scripts.js"></script>
+
+</body>
+</html>
