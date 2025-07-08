@@ -8,7 +8,7 @@
     fetch('http://localhost:5000/books', {method: 'GET',})
 
       .then(response => response.json())
-      .then(data => {data.books.forEach(item => insertList(item.name, item.author, item.synopsis, item.genre))})
+      .then(data => {data.books.forEach(item => insertList(item.title, item.author, item.synopsis, item.genre))})
       .catch(error => {console.error('Error:', error)});
   }
  
@@ -20,198 +20,119 @@
   */  
   getList()
   
+
   /*
     --------------------------------------------------------------------------------------
     Função para colocar um livro na lista do servidor via requisição POST
     --------------------------------------------------------------------------------------
   */
-
-  const postItem = async (inputName, inputAuthor, inputSynopsis) => {
-    const formData = new FormData();
-    formData.append('name', inputName);
-    formData.append('author', inputAuthor);
-    formData.append('synopsis', inputSynopsis);
-  
-    
-    fetch('http://localhost:5000/book', {method: 'POST', body: formData})
-
-      .then(response => response.json())
-      .then((data) => {
-        return data;
+const postItem = async (inputTitle, inputAuthor, inputSynopsis) => {
+  try {
+    const response = await fetch('http://localhost:5000/predict', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: inputTitle,
+        author: inputAuthor,
+        synopsis: inputSynopsis
       })
-      .catch(error => {console.error('Error:', error)});
-  }
+    });
 
-
-
-
-
-  /*
-    --------------------------------------------------------------------------------------
-    Função para adicionar um novo livro ao clicar em 'Salvar'
-    --------------------------------------------------------------------------------------
-  */
-  const newItem = () => {
-    let inputName = document.getElementById("name").value;
-    let inputAuthor = document.getElementById("author").value;
-    let inputSynopsis = document.getElementById("synopsis").value;
-
-    if (inputName === '' || inputAuthor === '' || inputSynopsis === '') {
-      alert("All the spaces must be filled!");
-    } else {
-
-      try {
-        // Envia os dados para o servidor e aguarda a resposta com o diagnóstico
-        const result = await postItem(inputPatient, inputPreg, inputPlas, inputPres, inputSkin, inputTest, inputMass, inputPedi, inputAge);
-          // Limpa o formulário
-        document.getElementById("newInput").value = "";
-        document.getElementById("newPreg").value = "";
-        document.getElementById("newPlas").value = "";
-
-        
-        // Recarrega a lista completa para mostrar o novo paciente com o diagnóstico
-        await refreshList();
-        
-        // Mostra mensagem de sucesso com o diagnóstico
-        const diagnostico = result.outcome === 1 ? "DIABÉTICO" : "NÃO DIABÉTICO";
-        alert(`Paciente adicionado com sucesso!\nDiagnóstico: ${diagnostico}`);
-        
-        // Scroll para a tabela para mostrar o novo resultado
-        document.querySelector('.items').scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
-        });
-        
-      } catch (error) {
-        console.error('Adding error:', error);
-        alert("Error. Try again.");
-      }
+    if (!response.ok) {
+      throw new Error(`Erro na requisição: ${response.statusText}`);
     }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-    alert("Prediction error.");
-  });
-}
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erro ao chamar postItem:', error);
+    throw error;
+  }
+};
 
 /*
-      insertList(inputBook, inputAuthor, inputSynopsis)
-      postItem(inputBook, inputAuthor, inputSynopsis)
-      
-      alert("Book added succefully!")
-    }
-  }
-  */
-
-  /*
-    --------------------------------------------------------------------------------------
-    Funcao para inserir os dados do formulário na tabela de id 'Tabela'. Também gera o botão de exclusão.
-    --------------------------------------------------------------------------------------
-  */
-
-    function insertList(book, author, synopsis, genre) {
-      // Selecionar a tabela HTML com id 'Tabela'
-      const tabela = document.getElementById('Tabela');
-    
-      // Criar uma nova linha
-      const linha = tabela.insertRow();
-    
-      // Criar células e adicionar os dados
-      const cellBook = linha.insertCell();
-      cellBook.textContent = book;
-  
-      const cellAuthor = linha.insertCell();
-      cellAuthor.textContent = author;
-    
-      const cellSynopsis = linha.insertCell();
-      cellSynopsis.textContent = synopsis;
-
-  
-      /*
-      // Insere a célula do gênero
-     const genreCell = row.insertCell(item.length);
-     const diagnosticText = outcome === 1 ? "DIABÉTICO" : "NÃO DIABÉTICO";
-     diagnosticCell.textContent = diagnosticText;
-  
-     // Aplica styling baseado no diagnóstico
-     if (outcome === 1) {
-     diagnosticCell.className = "diagnostic-positive";
-     } else {
-     diagnosticCell.className = "diagnostic-negative";
-     }
-
-    }
-
+  --------------------------------------------------------------------------------------
+  Função para adicionar um novo item (livro) com titulo, autor, sinopse e gênero
+  --------------------------------------------------------------------------------------
 */
+const newItem = async (event) => {
+ 
+
+ let inputTitle = document.getElementById("title").value; 
+ let inputAuthor = document.getElementById("author").value;     
+ let inputSynopsis = document.getElementById("synopsis").value; 
 
 
------------------------
+ const checkUrl = `http://127.0.0.1:5000/books?title=${inputTitle}`; 
 
-
-const newItem = async (event) => { 
-
-    // 1. Obter os dados dos inputs do livro
-    let inputName = document.getElementById("newName").value.trim(); // ID do input para Título
-    let inputAuthor = document.getElementById("newAuthor").value.trim(); // ID do input para Autor
-    let inputSynopsis = document.getElementById("newSynopsis").value.trim(); // ID do input para Sinopse
-
-    // 2. Lógica de Verificação de Duplicidade (Requer um endpoint API para listar livros por título)
    
-    
-    
-    fetch(`http://127.0.0.1:5000/books?name=${encodeURIComponent(inputName)}`, {
-        method: 'GET'
-    })
-    .then((response) => response.json())
-    .then(async (data) => {
-      
-    if (inputName === '' || inputAuthor === '' || inputSynopsis === '') {
-      alert("All the spaces must be filled!");
-        } else {
-            try {
-                // 3. Enviar os dados para a API para previsão
-                // A API /predict_batch espera uma lista de livros, então enviamos uma lista com um único item.
-                const bookDataToSend = [{
-                    name: inputName,
-                    author: inputAuthor,
-                    synopsis: inputSynopsis
-                }];
+    if (inputTitle === '') {
+        alert("Title can not be empty!");
+        return;
+    }
+    if (inputAuthor === '') {
+        alert("Author can not be empty!");
+        return;
+    }
+    if (inputSynopsis === '') {
+        alert("Synopsis can not be empty!");
+        return;
+    }
 
-                const response = await fetch('http://127.0.0.1:5000/predict_batch', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ books: bookDataToSend }) // Enviando como lista de um item
-                });
+    try {
+       
+      const result = await postItem(inputTitle, inputAuthor, inputSynopsis); 
+        
+        document.getElementById("title").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("synopsis").value = "";
+        
+        console.log("Data recieved:", result);
 
-                const result = await response.json();
+        insertList(result.title, result.author, result.synopsis, result.predicted_genre); 
 
-                if (!response.ok) {
-                    throw new Error(result.error || 'unidentified error.');
-                }
+        console.log("Resposta da API:", result);
 
-                // Assume que 'result.results' é um array e pegamos o primeiro (e único) item
-                const predictedGenre = result.results[0]?.predicted_genre || 'Not found genre';
-
-                // 4. Limpar o formulário (inputs individuais)
-                document.getElementById("newName").value = "";
-                document.getElementById("newAuthor").value = "";
-                document.getElementById("newSynopsis").value = "";
-                
-
-                alert(`Book added succefuly!`);
-                
-     
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert(`Error. Try again.\nDetails: ${error.message}`);
-            }
+        if (!result || !result.predicted_genre) {
+        console.error("Genre not provided or field missing:", result);
+        alert("Error predicting genre. Try again.");
+        return;
         }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert("Error. Try again");
-    });
+        
+       
+        alert(`Book added succefuly!\nPredicted Genre: ${result.predicted_genre}`);
+        
+
+        
+    } catch (error) {
+        console.error('Error adding book:', error);
+        alert("Error adding book. Try again.");
+    }
+}
+
+
+
+/*
+  --------------------------------------------------------------------------------------
+  Função para inserir livros na tabela com a criacao de uma linha
+ 
+  --------------------------------------------------------------------------------------
+*/
+const insertList = (title, author, synopsis, predicted_genre) => {
+ var item = [title, author, synopsis]; 
+ var table = document.getElementById('Tabela');
+ var row = table.insertRow(); 
+
+ 
+ for (var i = 0; i < item.length; i++) {
+  var cell = row.insertCell(i);
+  cell.textContent = item[i];
+ }
+    
+
+ var genreCell = row.insertCell(item.length); 
+ genreCell.textContent = predicted_genre;
+
 }
