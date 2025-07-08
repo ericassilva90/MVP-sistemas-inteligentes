@@ -14,23 +14,13 @@ info = Info(title="My Bookshelf", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
-# Obtém o diretório base onde o app.py está sendo executado
-# Obtém o diretório base onde o app.py está sendo executado
-# Isso resultaria em algo como '/caminho/para/seu_projeto'
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Define o caminho para a pasta 'machine_learning' que está DIRETAMENTE em BASE_DIR
 MACHINE_LEARNING_DIR = os.path.join(BASE_DIR, 'machine_learning')
-
-# Define o caminho para a pasta 'notebook' que está DENTRO de 'machine_learning'
 NOTEBOOK_DIR = os.path.join(MACHINE_LEARNING_DIR, 'notebook')
-
-# Agora, especifique os caminhos completos para os arquivos .joblib dentro da pasta 'notebook'
 MODEL_PATH = os.path.join(NOTEBOOK_DIR, 'best_genre_classifier_svm.joblib')
 VECTORIZER_PATH = os.path.join(NOTEBOOK_DIR, 'tfidf_vectorizer.joblib')
 
-# Carregue o modelo e o vetorizador UMA ÚNICA VEZ quando a aplicação for iniciada.
-# Isso economiza tempo e recursos, evitando recarregar a cada requisição.
 try:
     classifier_model = joblib.load(MODEL_PATH)
     tfidf_vectorizer = joblib.load(VECTORIZER_PATH)
@@ -70,13 +60,12 @@ def index():
     },
 )
 
-def predict(form: BookSchema):  # Pode manter o esquema se estiver usando validação automática
-    # Verifica se modelos estão carregados
+def predict(form: BookSchema):  
     if classifier_model is None or tfidf_vectorizer is None:
         return jsonify({'error': 'Modelo ou vetorizador não carregados.'}), 500
 
     try:
-        # Detecta se o conteúdo é JSON
+     
         if request.is_json:
             data = request.get_json()
         else:
@@ -105,10 +94,7 @@ def predict(form: BookSchema):  # Pode manter o esquema se estiver usando valida
 
     
 if __name__ == '__main__':
-    # Execute a aplicação Flask.
-    # Em ambiente de desenvolvimento, 'debug=True' é útil para ver erros.
-    # Em produção, 'debug' deve ser 'False' por motivos de segurança.
-    # 'host="0.0.0.0"' permite que a API seja acessível de outras máquinas na rede.
+
     app.run(debug=True, host='0.0.0.0')
 
 
@@ -129,5 +115,8 @@ def get_livros():
         # retorna a representação de produto
         print(books)
         return apresenta_livros(books), 200
+
+
+
 
 
