@@ -51,3 +51,5 @@ Na pasta machine_learning estão os notebook com modelagem do modelo a ser utili
 
 Foi criado um teste simples para testar a qualidade do modelo selecionado. Para utilizá-lo basta digital no terminal pytest test/test_model_performance.py. O resultado será exibido no próprio terminal.
 
+A apresentacao do projeto é feita no vídeo disponivel no link https://youtu.be/d4eEKGMrZzQ .
+
