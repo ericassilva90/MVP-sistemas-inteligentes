@@ -1,75 +1,59 @@
 from pydantic import BaseModel
 from typing import Optional, List
-from models.livro import Livro
+from models.livro import Book
 
 
 
-class LivroSchema(BaseModel):
+class BookSchema(BaseModel):
     """ Define como um novo livro a ser inserido deve ser representado.
     """
-    nome: str = "Orgulho e Preconceito"
-    autor: str = 'Jane Austen'
-    genero: str = 'Romance'
-    status: str = 'Lido'
+    title: str = "Pride and Prejudice"
+    author: str = 'Jane Austen'
+    synopsis: str = 'A timeless tale of Elizabeth Bennets quest for love and understanding amidst societal pressures and misconceptions.'
+ 
 
 
-class LivroBuscaSchema(BaseModel):
-    """ Define como deve ser a estrutura que representa a busca, com base no nome do livro.
-    """
-    nome: str = " "
-   
 
-class AutorBuscaSchema(BaseModel):
-    """ Define como deve ser a estrutura que representa a busca, com base no autor do livro.
-    """
-    autor: str = " "   
-
-
-class ListagemLivrosSchema(BaseModel):
+class ListBookSchema(BaseModel):
     """ Define como uma listagem de livros será retornada.
     """
-    livros:List[LivroSchema]
+    books:List[BookSchema]
 
 
-def apresenta_livros(livros: List[Livro]):
-    """ Retorna uma representação do livro seguindo o schema definido em LivroViewSchema.
+def apresenta_livros(books: List[Book]):
+    """ Retorna uma representação do livro seguindo o schema definido em BookViewSchema.
     """
     result = []
-    for livro in livros:
+    for book in books:
         result.append({
-            "nome": livro.nome,
-            "autor": livro.autor,
-            "genero": livro.genero,
-            "status": livro.status        
+            "title": book.title,
+            "author": book.author,
+            "synopsis": book.synopsis,
+            "genre": book.genre   
             })
 
-    return {"livros": result}
+    return {"books": result}
 
 
-class LivroViewSchema(BaseModel):
+class BookViewSchema(BaseModel):
     """ Define como um livro será retornado.
     """
     id: int = 1
-    nome: str = "Orgulho e Preconceito"
-    autor: str = "Jane Austen"
-    genero: str = "Romance"
-    status: str = "Lido"
+    title: str = "Pride and Prejudice"
+    author: str = 'Jane Austen'
+    synopisis: str = 'A timeless tale of Elizabeth Bennets quest for love and understanding amidst societal pressures and misconceptions.'
+    genre: str = 'fantasy'
+   
 
 
-
-class LivroDeleteSchema(BaseModel):
-    """ Define como deve ser a estrutura do dado retornado após uma requisição de remoção.
-    """
-    message: str
-    nome: str
-
-def apresenta_livro(livro: Livro):
-    """ Retorna uma representação do livro seguindo o schema definido em LivroViewSchema.
+def apresenta_livro(book: Book):
+    """ Retorna uma representação do livro seguindo o schema definido em BookViewSchema.
     """
     return {
-        "id": livro.id,
-        "nome": livro.nome,
-        "autor": livro.autor,
-        "genero": livro.genero,
-        "status": livro.status
+        "id": book.id,
+        "title": book.title,
+        "author": book.author,
+        "synopsis": book.synopsis,
+        "genre": book.genre
     }
+
