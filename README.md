@@ -6,6 +6,10 @@ Inicialmente esclareco que foi aproveitado e editado o projeto apresentado na di
 
 O projeto consiste em criar um modelo de machine learning que possa prever o gênero de um livro a partir da sinopse disponibilizada. Para isso sao comparados os algoritmos KNN, Árvore de Classificação, Naive Bayes e SVM para chegar ao melhor modelo, que entao pode ser utilizado para previsao de gêneros literários pelo utilizador.
 
+A apresentacao do projeto é feita no vídeo disponivel no link https://youtu.be/d4eEKGMrZzQ .
+
+
+
 # Objetivo e Funcionalidades
 
 O presente projeto tem por objetivo criar uma API para que o usuário possa inserir os dados dos livros que leu ou está lendo. Tem objetivo pessoal e não comercial.
@@ -51,5 +55,5 @@ Na pasta machine_learning estão os notebook com modelagem do modelo a ser utili
 
 Foi criado um teste simples para testar a qualidade do modelo selecionado. Para utilizá-lo basta digital no terminal pytest test/test_model_performance.py. O resultado será exibido no próprio terminal.
 
-A apresentacao do projeto é feita no vídeo disponivel no link https://youtu.be/d4eEKGMrZzQ .
+
 
