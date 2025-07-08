@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>My bookcase</title>
+    <title>My Bookshelf</title>
 </head>
 
 <body>
   <div class="container">
       <div>
-          <h1>Meus livros</h1>
+          <h1>My books</h1>
       </div>
       <!--Fomulário responsável por receber os dados a serem armazenados-->
       <form onsubmit="event.preventDefault();">
           <fieldset>
             <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name">
+              <label for="title">Title</label>
+              <input type="text" id="title" name="title">
             </div>
             <div class="form-group">
               <label for="author">Author</label>
@@ -35,7 +35,7 @@
           <table id="Tabela">
            <thead class="thead-default">
               <tr class="tabela-linha">
-                 <th>Name</th>
+                 <th>Title</th>
                  <th>Author</th>
                  <th>Synopsis</th>
                  <th>Genre</th>
