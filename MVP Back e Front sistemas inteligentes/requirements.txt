@@ -10,3 +10,4 @@ typing_extensions
 werkzeug
 pandas
 scikit-learn
+pytest
